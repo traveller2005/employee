@@ -7,10 +7,18 @@ db = Database("employee.db")
 
 #--------------------  ROOT ----------------- 
 root = Tk()
-root.geometry("1300x650")
-root.title("ahmed mangement")
+w=1300
+h=650
+sw= root.winfo_screenwidth()
+sh= root.winfo_screenheight()
+x= (sw-w)/2
+y= (sh-h)/2
+root.geometry("%dx%d+%d+%d" % (w, h, x, y))
+root.title("Ahmed Mangement")
 root.resizable(FALSE,FALSE)
 root.configure(bg="gray")
+#--------------------  logo ------------------
+root.iconbitmap("log.ico")
 #---------------- VARIABLE NAMES -------------
 name  = StringVar()
 job   = StringVar()
@@ -195,7 +203,7 @@ def add_employee():
                    txtemail.get(),
                    txtphone.get(),
                    txtaddress.get(1.0,END))
-        messagebox.showinfo("Success" "New Employee is added successfully")
+        messagebox.showinfo("رسالة" "تم اضافة الموظف بنجاح")
     clear()
     displayAll()
 #=============================================

@@ -2,6 +2,7 @@ from tkinter import *
 from tkinter import ttk , messagebox
 from db import Database
 import sqlite3
+import re
 db = Database("employee.db")
 
 #--------------------  ROOT ----------------- 
@@ -175,18 +176,26 @@ Raises:
     ValueError: If any of the input fields are empty.
 """
 def add_employee():
+    email_pattern = r'\b[A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+\.[A-Z|a-z]{2,}\b'
+    phone_pattern = r'\d{10}$'
     if txtname.get() == '' or txtage.get() == "" or txtjob.get()=="" or comb.get()=="" or txtemail.get()=="" or txtphone.get()=="" or txtaddress.get(1.0,END) == "":
-        messagebox.showerror("Error","Please Fill ALL The Fields ")
+        messagebox.showerror("تنبيه","من فضلك املأكافة الحقول ")
         return
-
-    db.insert (txtname.get(),
-               txtage.get(),
-               txtjob.get(),
-               comb.get(),
-               txtemail.get(),
-               txtphone.get(),
-               txtaddress.get(1.0,END))
-    messagebox.showinfo("Success" "New Employee is added successfully")
+    elif not re.fullmatch(email_pattern, txtemail.get()):
+        messagebox.showerror("تنبيه", "خطأ في كتابة البريد الالكتروني")
+        return
+    elif not re.fullmatch(phone_pattern, txtphone.get()) or not txtphone.get().isdigit():
+        messagebox.showerror("تنبيه", "خطأ في كتابة رقم الهاتف")
+        return
+    else:
+        db.insert (txtname.get(),
+                   txtage.get(),
+                   txtjob.get(),
+                   comb.get(),
+                   txtemail.get(),
+                   txtphone.get(),
+                   txtaddress.get(1.0,END))
+        messagebox.showinfo("Success" "New Employee is added successfully")
     clear()
     displayAll()
 #=============================================
